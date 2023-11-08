@@ -37,7 +37,8 @@ export class AppController {
       new ParseFilePipe({
         validators: [
           new FileTypeValidator({ fileType: 'text/csv' }),
-          new MaxFileSizeValidator({ maxSize: 50000000 }),
+          /* 50 * 1024 * 1024 = 50 MB */
+          new MaxFileSizeValidator({ maxSize: 50 * 1024 * 1024 }),
         ],
       }),
     )
