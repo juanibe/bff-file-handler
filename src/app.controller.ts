@@ -41,14 +41,17 @@ export class AppController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new FileTypeValidator({ fileType: 'text/csv' }),
-          /* 50 * 1024 * 1024 = 50 MB */
-          new MaxFileSizeValidator({ maxSize: 50 * 1024 * 1024 }),
+          new FileTypeValidator({
+            fileType: 'text/csv',
+          }),
+          new MaxFileSizeValidator({
+            maxSize: 50 * 1024 * 1024,
+          }),
         ],
       }),
     )
     file: Express.Multer.File,
-  ): any {
-    return this.appService.uploadFile(file);
+  ): void {
+    this.appService.uploadFile(file);
   }
 }

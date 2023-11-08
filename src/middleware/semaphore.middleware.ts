@@ -11,7 +11,7 @@ export class SemaphoreMiddleware implements NestMiddleware {
     if (acquired) {
       next();
     } else {
-      res.status(503).send('ServiceCurrentlyUnavailableError');
+      res.status(503).send('Service Unavailable');
     }
   }
 }

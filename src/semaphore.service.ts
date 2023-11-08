@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SemaphoreService {
-  private semaphore: number = 5; // Initialize with 5 available slots
+  private slots: number = 5; // Initialize with 5 available slots
 
   async acquire() {
-    if (this.semaphore > 0) {
-      this.semaphore--;
+    if (this.slots > 0) {
+      this.slots--;
       return true;
     } else {
       return false;
@@ -14,12 +14,12 @@ export class SemaphoreService {
   }
 
   release() {
-    if (this.semaphore < 5) {
-      this.semaphore++;
+    if (this.slots < 5) {
+      this.slots++;
     }
   }
 
   getcount() {
-    return this.semaphore;
+    return this.slots;
   }
 }
