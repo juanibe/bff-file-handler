@@ -13,8 +13,8 @@ import { SemaphoreService } from './semaphore.service';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      // .apply(RateLimiterMiddleware)
-      // .forRoutes('*')
+      .apply(RateLimiterMiddleware)
+      .forRoutes('*')
       .apply(SemaphoreMiddleware)
       .forRoutes('*');
   }
