@@ -11,14 +11,19 @@ import {
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { HealthService } from './health.service';
+import { HealthResponseDto } from './dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly healthService: HealthService,
+  ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get('health')
+  getHealth(): HealthResponseDto {
+    return this.healthService.getHealthInfo();
   }
 
   @Post('upload')
@@ -43,7 +48,7 @@ export class AppController {
       }),
     )
     file: Express.Multer.File,
-  ) {
+  ): any {
     return this.appService.uploadFile(file);
   }
 }
