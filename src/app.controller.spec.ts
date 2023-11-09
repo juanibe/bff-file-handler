@@ -1,11 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { Readable } from 'stream';
-import { SemaphoreService } from './semaphore.service';
-import { HealthService } from './health.service';
 import { readdirSync, unlinkSync } from 'fs';
 
 function createMockFile(): Express.Multer.File {
@@ -24,7 +20,7 @@ function createMockFile(): Express.Multer.File {
   return file;
 }
 
-// Mock the middleware that enforces request limitation per user
+// Mock the middleware that enforces request limitation per user, since I am not testing that functionality
 jest.mock('./middleware/rate-limiter.middleware', () => ({
   YourMiddlewareClass: jest.fn().mockImplementation(() => ({
     use: (req, res, next) => {
@@ -35,7 +31,6 @@ jest.mock('./middleware/rate-limiter.middleware', () => ({
 
 describe('SemaphoreMiddleware (e2e)', () => {
   let app;
-  let appService: AppService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -52,18 +47,9 @@ describe('SemaphoreMiddleware (e2e)', () => {
     dir.forEach((file) => unlinkSync('./upload/' + file));
   });
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService, SemaphoreService, HealthService],
-    }).compile();
-
-    appService = app.get<AppService>(AppService);
-  });
-
   it('Should return Service Unavailable when more than 5 concurrent requests are made', async () => {
-    // Simulate more than 5 requests
-    const requests = Array.from({ length: 6 }, (_, index) =>
+    /* Simulate more than 5 requests */
+    const requests = Array.from({ length: 6 }, () =>
       request(app.getHttpServer())
         .post('/upload')
         .set('Authorization', `Basic YWRtaW46YWRtaW4=`)
@@ -74,6 +60,7 @@ describe('SemaphoreMiddleware (e2e)', () => {
 
     expect(responses[2].status).toBe(201);
 
+    /* The sixth request should return Service Unavailable */
     expect(responses[5].status).toBe(503);
     expect(responses[5].text).toBe('Service Unavailable');
   });
