@@ -1,15 +1,33 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RateLimiterMiddleware } from './middleware/rate-limiter.middleware';
+import { SemaphoreService } from './semaphore.service';
+import { HealthService } from './health.service';
+import {
+  AuthMiddleware,
+  RateLimiterMiddleware,
+  SemaphoreMiddleware,
+} from './middleware';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
+  imports: [ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SemaphoreService, HealthService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(RateLimiterMiddleware).forRoutes('*');
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('*')
+      .apply(RateLimiterMiddleware)
+      .forRoutes({ path: 'upload', method: RequestMethod.ALL })
+      .apply(SemaphoreMiddleware)
+      .forRoutes({ path: 'upload', method: RequestMethod.ALL });
   }
 }

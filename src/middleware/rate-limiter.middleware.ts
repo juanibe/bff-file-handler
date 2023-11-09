@@ -21,8 +21,8 @@ export class RateLimiterMiddleware implements NestMiddleware {
       );
 
       next();
-    } catch (e) {
-      res.status(429).send('Too Many Requests');
+    } catch (error) {
+      res.status(429).send('TooManyRequestsError');
     }
   }
 }
