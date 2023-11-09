@@ -29,6 +29,15 @@ jest.mock('./middleware/rate-limiter.middleware', () => ({
   })),
 }));
 
+// Mock the auth middleware
+jest.mock('./middleware/auth.middleware', () => ({
+  YourMiddlewareClass: jest.fn().mockImplementation(() => ({
+    use: (req, res, next) => {
+      next();
+    },
+  })),
+}));
+
 describe('SemaphoreMiddleware (e2e)', () => {
   let app;
 
@@ -52,7 +61,6 @@ describe('SemaphoreMiddleware (e2e)', () => {
     const requests = Array.from({ length: 6 }, () =>
       request(app.getHttpServer())
         .post('/upload')
-        .set('Authorization', `Basic YWRtaW46YWRtaW4=`)
         .attach('file', createMockFile().buffer, createMockFile().originalname),
     );
 
