@@ -56,6 +56,9 @@ AUTH_PASS=admin
   Headers:
   Authorization Basic
 
+  Body:
+  file: Binary
+
 ## Authorization
 
 A "Basic token" should be set as Authorization header, Base64 encoded with the format `user:password`
