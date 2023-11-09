@@ -6,10 +6,9 @@ import { Request, Response, NextFunction } from 'express';
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers.authorization;
+    const authHeader: string = req.headers.authorization;
 
     if (authHeader) {
-      console.log(process.env.AUTH_USER);
       const [username, password] = Buffer.from(
         authHeader.split(' ')[1],
         'base64',
