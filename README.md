@@ -11,8 +11,22 @@
 
 ## Installation
 
+Clone the repository
+
+```bash
+$ git clone <repository-url>
+```
+
+Install the necessary packages
+
 ```bash
 $ npm install
+```
+
+Run the code
+
+```bash
+$ npm run start:dev
 ```
 
 ## Environment file
@@ -70,4 +84,6 @@ $ npm run test
 
 ## Developer notes
 
-Ideally the app should be diveded in "modules", each module with its concern, but since it is a small app I decided to keep the code within the src folder.
+- A CI/CD template for Github actions was created as an example, even though no server was configured to deploy the application
+
+- Ideally the app should be diveded in "modules", each module with its concern, but since it is a small app I decided to keep the code within the src folder.
