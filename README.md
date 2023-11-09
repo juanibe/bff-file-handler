@@ -25,6 +25,23 @@ AUTH_USER=admin
 AUTH_PASS=admin
 ```
 
+## API DOCS:
+
+- GET /health
+
+  Returns information about CPU pressure and available
+  memory
+
+  Headers:
+  Authorization Basic
+
+- POST /upload
+
+  Uploads a csv file with up to 50 MB
+
+  Headers:
+  Authorization Basic
+
 ## Authorization
 
 A "Basic token" should be set as Authorization header, Base64 encoded with the format `user:password`
@@ -53,4 +70,4 @@ $ npm run test
 
 ## Developer notes
 
-Since it is a small app, I placed the code in the same place. Ideally it should be diveded in "modules", each module with its concern.
+Ideally the app should be diveded in "modules", each module with its concern, but since it is a small app I decided to keep the code within the src folder.
