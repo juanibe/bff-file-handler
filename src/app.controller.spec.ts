@@ -3,6 +3,7 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { Readable } from 'stream';
 import { readdirSync, unlinkSync } from 'fs';
+import { NestApplication } from '@nestjs/core';
 
 function createMockFile(): Express.Multer.File {
   const file: Express.Multer.File = {
@@ -39,7 +40,7 @@ jest.mock('./middleware/auth.middleware', () => ({
 }));
 
 describe('SemaphoreMiddleware (e2e)', () => {
-  let app;
+  let app: NestApplication;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
